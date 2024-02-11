@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<h:head>
+	<title>Editar Cliente</title>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' />
+
+<style>
+
+body {
+	font-family: 'Montserrat';
+	margin: 0;
+}
+
+.top {
+	display: flex;
+	justify-content: center;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 4%;
+}
+
+.fields {
+	color: #009fff;
+	border: 3px double #009fff;
+	border-radius: 30px;
+	padding: 15px;
+	margin-bottom: 2rem;
+	width: 30em;
+	box-shadow: 1px 1px 100px 1px gray;
+}
+
+.btn {
+	display: grid;
+	margin-top: 10px;
+    text-align: center;
+}
+
+p {
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.erros {
+	color: red;
+}
+
+</style>
+</h:head>
+
+<h:body>
+	
+	<div class="container">
+		<h:form id="formclienteEdit">
+			<p:focus for="ccliNome"/>
+			<p:growl id="growl" showDetail="true" />
+			<p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+			
+			<div class="fields">
+				<h3>Nome/Razão Social</h3>
+					<p:inputText id="ccliNome" value="#{CadClienteController.cadClienteEdit.ccliNome}" required="true" requiredMessage="Campo obrigatório" style="width: 100%" maxlength="80" >
+						<p:keyFilter regEx="/[a-záàâãéèêíïóôõöúçñA-Z\s_]/i"/>
+					</p:inputText>
+
+				<h3>CPF/CNPJ</h3>
+				<p:inputText id="ccliCnpjCpf" value="#{CadClienteController.cadClienteEdit.ccliCnpjCpf}" required="true" requiredMessage="Campo obrigatório" maxlength="18" />
+
+				<h3>Ativo</h3>
+					<p:selectOneMenu id="ccliAtivo" value="#{CadClienteController.cadClienteEdit.ccliAtivo}" >
+						<f:selectItem itemLabel="Sim" itemValue="S"/>
+                    	<f:selectItem itemLabel="Não" itemValue="N"/>
+					</p:selectOneMenu>
+				
+				<div class="btn">
+					<p:commandButton value="Alterar" action="#{CadClienteController.edit}" styleClass="rounded-button ui-button-success" update="formclienteEdit" />
+				</div>
+				
+				<div class="btn">
+					<p:commandButton value="Voltar" immediate="true" action="#{CadClienteController.goView}" styleClass="rounded-button ui-button-danger" />
+				</div>
+			</div>
+		</h:form>
+	</div>
+</h:body>
+</html>

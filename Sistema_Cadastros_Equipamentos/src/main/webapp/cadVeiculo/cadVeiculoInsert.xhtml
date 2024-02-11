@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<h:head>
+	<title>Cadastrar Veículo</title>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' />
+
+<style>
+
+body {
+	font-family: 'Montserrat';
+	margin: 0;
+}
+
+.top {
+	display: flex;
+	justify-content: center;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 4%;
+}
+
+.fields {
+	border: 3px double #009fff;
+	border-radius: 30px;
+	padding: 15px;
+	margin-bottom: 2rem;
+	width: 30em;
+	box-shadow: 1px 1px 100px 1px gray;
+}
+
+.btn {
+	display: grid;
+	margin-top: 10px;
+    text-align: center;
+}
+
+h2 {
+	text-align: center;
+	font-size: 20px;
+}
+
+p {
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.erros {
+	color: red;
+}
+
+</style>
+</h:head>
+
+<h:body>
+	<div class="container">
+		<h:form id="formCadVeiculo">
+			<p:focus for="cveiPlaca"/>
+			<p:growl id="growl" showDetail="true" />
+			<p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+			
+			<div class="fields">
+			
+			<h2>Cadastrar novo veículo</h2>
+			
+				<h3>Placa</h3>
+					<p:selectOneButton id="tipoPlaca" value="#{CadVeiculoController.cadVeiculoEdit.tipoPlaca}">
+						<f:selectItem itemLabel="Padrão Antigo" itemValue="Antiga" />
+						<f:selectItem itemLabel="Padão Mercosul" itemValue="Mercosul" />
+						<p:ajax listener="#{CadVeiculoController.atualizaMaskPlaca}" update="formCadVeiculo"/>
+					</p:selectOneButton>
+					
+					<p:inputMask id="cveiPlaca" value="#{CadVeiculoController.cadVeiculoEdit.cveiPlaca}" required="true" requiredMessage="Informe uma placa" style="display: flex; width: 25%; text-transform:uppercase; margin-top: 5px;" maxlength="#{CadVeiculoController.cadVeiculoEdit.maxLenghtInput}" mask="#{CadVeiculoController.cadVeiculoEdit.maskPlaca}" />
+				
+				<h3>Display</h3>
+					<p:inputText id="cveiDisplay" value="#{CadVeiculoController.cadVeiculoEdit.cveiDisplay}" required="true" requiredMessage="Informe o display" maxlength="25" style="width: 100%">
+						<p:keyFilter regEx="/[a-záàâãéèêíïóôõöúçñA-Z\s\d_]/i"/>
+					</p:inputText>
+				
+				
+				<h3>Cor</h3>
+					<p:selectOneMenu id="cveiCor" value="#{CadVeiculoController.cadVeiculoEdit.cveiTcorId}">
+						<f:selectItems value="#{CadVeiculoController.alTabCores}" var="cor" itemLabel="#{cor.tcorDescricao}" itemValue="#{cor.tcorId}" />
+					</p:selectOneMenu>
+				
+				<h3>Tipo do veículo</h3>
+					<p:selectOneMenu id="cveiTipo" value="#{CadVeiculoController.cadVeiculoEdit.cveiTtveId}">
+						<f:selectItems value="#{CadVeiculoController.alTabTiposVeiculos}" var="tipo" itemLabel="#{tipo.ttveDescricao}" itemValue="#{tipo.ttveId}" />
+					</p:selectOneMenu>
+				
+				<h3>Equipamento</h3>
+					<p:selectOneMenu id="cveiEqui" value="#{CadVeiculoController.cadVeiculoEdit.cveiCequId}" style="width: 50%">
+						<f:selectItem itemLabel="Nenhum" itemValue="#{null}" />
+						<f:selectItems value="#{CadVeiculoController.alCadEquipamentos}" var="equi" itemLabel="#{equi.cequNumSerial}" itemValue="#{equi.cequId}" />
+					</p:selectOneMenu>
+				
+				<h3>Cliente</h3>
+					<p:selectOneMenu id="ccliNome" value="#{CadVeiculoController.cadVeiculoEdit.cveiCcliId}">
+						<f:selectItems value="#{CadVeiculoController.alCadClientes}" var="cli" itemLabel="#{cli.ccliNome}" itemValue="#{cli.ccliId}" />
+					</p:selectOneMenu>
+				
+				<h3>Ativo</h3>
+					<p:selectOneMenu id="cequAtivo" value="#{CadVeiculoController.cadVeiculoEdit.cveiAtivo}" >
+						<f:selectItem itemLabel="Sim" itemValue="S"/>
+                    	<f:selectItem itemLabel="Não" itemValue="N"/>
+					</p:selectOneMenu>
+				
+				<div class="btn">
+					<p:commandButton value="Cadastrar" action="#{CadVeiculoController.insert}" styleClass="rounded-button ui-button-success" update="formCadVeiculo" />
+				</div>
+				
+				<div class="btn">
+					<p:commandButton value="Voltar" immediate="true" action="#{CadVeiculoController.goView}" styleClass="rounded-button ui-button-danger" />
+				</div>
+				
+			</div>
+		</h:form>
+	</div>
+</h:body>
+</html>

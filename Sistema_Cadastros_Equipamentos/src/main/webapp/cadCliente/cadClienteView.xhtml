@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<h:head>
+	<title>Clientes Cadastrados</title>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' />
+
+<style>
+
+body {
+	font-family: 'Montserrat';
+	margin: 0;
+}
+
+.top {
+	display: flex;
+	justify-content: center;
+}
+
+.fields {
+	border: 1px solid #c3c3c3;
+	border-radius: 30px;
+	padding: 5px;
+	margin-bottom: 2rem;
+}
+
+.btns {
+   	display: flex;
+   	justify-content: center;
+   	margin: 10px auto;
+}
+
+.filtro1 {
+	margin: auto 6px;
+    padding: 20px;
+}
+
+.filtro2{
+	margin: auto 6px;
+    padding: 20px;
+}
+
+.btnFiltrar {
+	margin: auto;
+}
+
+.btnFiltro5 {
+	display: flex;
+   	justify-content: center;
+   	margin: 10px auto;
+}
+
+.btnNovo {
+	margin: auto 6px;
+  	background: darkcyan;
+	font-weight: bold;
+	color: #fff;
+	border: 1px solid #2e738f;
+    border-radius: 26px;
+    padding: 20px;
+    text-align: center;
+}
+
+table {
+	width: 70%;
+	margin: auto;
+}
+
+table, td {
+	border-collapse: collapse;
+	border: 1px solid #b3b1a3;
+	padding: 10px;
+	text-align: center;
+}
+th {
+	background: #bce6dd;
+	padding: 10px;
+}
+p {
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+tr:hover, td:hover{
+	background: #e7e6dd;
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+</style>
+</h:head>
+
+<h:body>
+	<div class="container">
+		<h:form id = "formCadCliente">
+		<p:focus for="ccliNome"/>
+		
+			<div class="top">
+				<p:growl id="messages" />
+				<p:menubar style="background: #a5c6d2; width: 100%; text-align: center; margin-bottom: 20px;">
+				
+					<p:submenu label="Veículos" icon="pi pi-car" style="margin: 0 23px; font-size: 18px;">
+						<p:menuitem value="Cadastrar" icon="pi pi-plus" action="#{CadVeiculoController.goInsert}" />
+						<p:menuitem value="Procurar veículo cadastrado" icon="pi pi-eye" action="#{CadVeiculoController.goView}" />
+					</p:submenu>
+
+					<p:submenu label="Clientes" icon="pi pi-users" style="margin: 0 40px; font-size: 18px;" >
+						<p:menuitem value="Cadastrar" icon="pi pi-plus" action="#{CadClienteController.goInsert}"/>
+					</p:submenu>
+
+					<p:submenu label="Equipamentos" icon="pi pi-wrench" style="margin: 0 23px; font-size: 18px;" >
+						<p:menuitem value="Cadastrar" icon="pi pi-plus" action="#{CadEquipamentoController.goInsert}" />
+						<p:menuitem value="Procurar equipamentos cadastrados" icon="pi pi-eye" action="#{CadEquipamentoController.goView}" />
+					</p:submenu>
+					
+				</p:menubar>
+			</div>
+		
+				<h2>Clientes</h2>
+			<div class="fields">
+			
+ 				<div class="btns">
+ 				
+					<div class="btnFiltro5">
+		 				<div class="filtro1">
+							<span class="ui-input-icon-right ui-float-label"> <i class="pi pi-search" />
+								<p:inputText id="ccliNome" value="#{CadClienteController.cadClienteFiltro.ccliNome}" maxlength="50" style="font-size: 1.2em; font-family: Montserrat; font-weight: bold;" />
+								<p:outputLabel for="@previous" value="Filtrar por nome" style="font-size: 1.1em; margin-left: 0; color: darkcyan; font-family: Montserrat; font-weight: bold;" />
+							</span>
+							
+						</div>
+						
+						
+						<div class="filtro2">
+							<span class="ui-input-icon-right ui-float-label"> <i class="pi pi-search" />
+							
+								<p:selectOneButton id="tipoCliente" value="#{CadClienteController.cadClienteEdit.tipoCliente}">
+									<f:selectItem itemLabel="Pessoa Física" itemValue="fisica" />
+									<f:selectItem itemLabel="Pessoa Jurídica" itemValue="juridica" />
+									<p:ajax listener="#{CadClienteController.atualizaMaskCnpjCpf}" update="ccliCnpjCpf"/>
+								</p:selectOneButton>
+								
+								<p:inputMask id="ccliCnpjCpf" value="#{CadClienteController.cadClienteFiltro.ccliCnpjCpf}" maxlength="#{CadClienteController.cadClienteEdit.maxlengthCnpjCpf}" mask="#{CadClienteController.cadClienteEdit.maskCnpjCpf}" style="font-size: 1.2em; font-family: Montserrat; font-weight: bold;" />
+								<p:outputLabel for="@previous" value="Filtrar por CPF/CNPJ" style="font-size: 1.1em; margin-left: 15em;  color: darkcyan; font-family: Montserrat; font-weight: bold;" />
+							</span>
+						</div>
+						
+						<div class="btnFiltrar">
+							<p:commandButton action="#{CadClienteController.filtrar}" value="Filtrar" update="formCadCliente" style="width: 10em" />
+						</div>
+					</div>
+				</div>
+				
+			</div>
+				
+			<table>
+				<tr>
+					<th>Nome/Razão Social</th>
+					<th>CPF/CNPJ</th>
+					<th>Editar</th>
+				</tr>
+				
+				<ui:repeat value="#{CadClienteController.alCadClientes}" var="cli">
+					<tr>
+						<td><h:outputText value="#{cli.ccliNome}" /> </td>
+						<td><h:outputText value="#{cli.ccliCnpjCpf}" /></td>
+						
+						<td>
+							<p:commandButton value="Editar" action="#{CadClienteController.goEdit}" icon="pi pi-user-edit" styleClass="ui-button-raised ui-button-help" style="width: 100% ">
+								<f:setPropertyActionListener value="#{cli.ccliId}" target="#{CadClienteController.cadClienteEdit.ccliId}" />		
+							</p:commandButton>
+						</td>
+					</tr>
+				</ui:repeat>
+			</table>
+		</h:form>
+	</div>
+</h:body>
+</html>
