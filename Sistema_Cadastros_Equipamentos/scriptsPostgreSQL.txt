@@ -1,0 +1,82 @@
+----------Tabela Tecnologia--------------
+CREATE TABLE tab_tecnologia (
+	ttec_id SMALLSERIAL PRIMARY KEY,
+	ttec_descricao VARCHAR(255)
+)
+
+INSERT INTO tab_tecnologia (ttec_descricao) 
+VALUES
+('Tecnologia 1'),
+('Tecnologia 2'),
+('Tecnologia 3'),
+('Tecnologia X'),
+('Tecnologia Y'),
+('Tecnologia Z')
+
+
+-----------Tabela Cor-----------------
+CREATE TABLE tab_cor (
+	tcor_id SMALLSERIAL PRIMARY KEY,
+	tcor_descricao VARCHAR(255)
+)
+
+INSERT INTO tab_cor (tcor_descricao)
+VALUES
+('Preto'),
+('Branco'),
+('Prata'),
+('Azul'),
+('Vermelho'),
+('Chumbo')
+
+------------Tabela Tipo Veiculo-----------
+CREATE TABLE tab_tipo_veiculo (
+	ttip_vei_id SMALLSERIAL PRIMARY KEY,
+	ttip_vei_descricao VARCHAR(255)
+)
+
+INSERT INTO tab_tipo_veiculo (ttip_vei_descricao)
+VALUES
+('Carro'),
+('Motocicleta'),
+('Caminhão'),
+('Ônibus')
+
+---------Tabela Equipamento----------
+create table cad_equipamento (
+	cequ_id serial,
+	cequ_numserial bigint,
+	cequ_ttec_id smallint,
+	cequ_data_ins timestamp,
+	cequ_data_status timestamp,
+	cequ_ativo char,
+	foreign key (cequ_ttec_id) references tab_tecnologia (ttec_id)
+)
+
+---------Tabela Cliente----------
+create table cad_cliente (
+	ccli_id serial primary key,
+	ccli_nome varchar(255),
+	ccli_cnpj_cpf varchar(20) unique,
+	ccli_data_ins timestamp,
+	ccli_data_status timestamp,
+	ccli_ativo char
+)
+
+----------Tabela Veículo---------------
+create table cad_veiculo (
+	cvei_id serial primary key,
+	cvei_placa varchar(20),
+	cvei_display varchar(255),
+	cvei_tcor_id smallint,
+	cvei_ttve_id smallint,
+	cvei_cequ_id int, 
+	cvei_ccli_id int,
+	cvei_data_ins timestamp,
+	cvei_data_status timestamp,
+	cvei_ativo char,	
+	foreign key (cvei_tcor_id) references tab_cor(tcor_id),
+	foreign key (cvei_ttve_id) references tab_tipo_veiculo(ttve_id),
+	foreign key (cvei_cequ_id) references cad_equipamento(cequ_id),
+	foreign key (cvei_ccli_id) references cad_cliente(ccli_id)
+)
